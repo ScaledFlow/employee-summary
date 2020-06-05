@@ -1,3 +1,5 @@
+const Employee = require("./lib/Employee");
+
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -10,6 +12,11 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const test = new Employee("john", 24, "johnleintz@scaled.flow.com");
+console.log(test);
+console.log(test.getName());
+console.log(test.getId());
+console.log(test.getEmail());
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
