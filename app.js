@@ -11,34 +11,6 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const Emp = new Employee("john", 24, "johnleintz@scaled.flow.com");
-console.log(Emp);
-console.log(Emp.getName());
-console.log(Emp.getId());
-console.log(typeof Emp.getId());
-console.log(Emp.getEmail());
-console.log(Emp.getRole());
-//console.log(Emp.Employee());
-
-// const Eng = new Engineer("john", 25, "johnleintz@scaledflow.com", "mygithub");
-// console.log(Eng);
-// console.log(Eng.getGitHub());
-// console.log(Eng.getRole());
-
-// const Mng = new Manager("Bob Johnson", 30, "bobjohnson@scaledflow.com", "222");
-
-// console.log(Mng);
-// console.log(Mng.getRole());
-
-// const Int = new Intern(
-//   "Todd Johnson",
-//   22,
-//   "toodjohnson@scaledflow.com",
-//   "Big School"
-// );
-
-// console.log(Int);
-
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
