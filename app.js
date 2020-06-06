@@ -1,5 +1,4 @@
 const Employee = require("./lib/Employee");
-
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -12,11 +11,32 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const test = new Employee("john", 24, "johnleintz@scaled.flow.com");
-console.log(test);
-console.log(test.getName());
-console.log(test.getId());
-console.log(test.getEmail());
+const Emp = new Employee("john", 24, "johnleintz@scaled.flow.com");
+console.log(Emp);
+console.log(Emp.getName());
+console.log(Emp.getId());
+console.log(Emp.getEmail());
+console.log(Emp.getRole());
+//console.log(Emp.Employee());
+
+const Eng = new Engineer("john", 25, "johnleintz@scaledflow.com", "mygithub");
+console.log(Eng);
+console.log(Eng.getGitHub());
+console.log(Eng.getRole());
+
+const Mng = new Manager("Bob Johnson", 30, "bobjohnson@scaledflow.com", "222");
+
+console.log(Mng);
+console.log(Mng.getRole());
+
+const Int = new Intern(
+  "Todd Johnson",
+  22,
+  "toodjohnson@scaledflow.com",
+  "Big School"
+);
+
+console.log(Int);
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -37,6 +57,6 @@ console.log(test.getEmail());
 
 // HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
 // and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
+// for further information. Be sure to Emp out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
