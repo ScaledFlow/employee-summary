@@ -2,6 +2,7 @@ const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const promptMgr = require("./lib/promptMgr.js");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -12,6 +13,29 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
+
+function populateMgr(answers) {
+  console.log(answers.name);
+  const e = new Manager(
+    answers.name,
+    answers.id,
+    answers.email,
+    answers.officeNumber
+  );
+  console.log("manager name is: " + e.getName());
+}
+
+async function init() {
+  try {
+    const answers = await promptMgr();
+    await populateMgr(answers);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+init();
+
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
