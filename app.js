@@ -8,11 +8,15 @@ const promptInt = require("./lib/promptInt.js");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const util = require("util");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer.js");
+
+// Setup up util.promisify
+const writeFileAsync = util.promisify(fs.writeFile);
 
 const test01 = "this is a test";
 // console.log(test02);
@@ -62,7 +66,6 @@ async function init() {
     let complete = false;
     const manager = populateMgr(mgrAnswers);
     employees.push(manager);
-    // console.log("value of employees: " + employees[0].name);
     // console.log("value of employees: " + employees[0].getRole());
     // console.log("returned e value: " + Managers.getRole());
     let procType = mgrAnswers.empTypeMng;
@@ -73,8 +76,6 @@ async function init() {
           procType = engAnswers.empTypeEng;
           const engineer = populateEng(engAnswers);
           employees.push(engineer);
-          // console.log("returned engineer role value: " + engineer.getRole());
-          // console.log("Eng selected, procType = " + procType);
           break;
 
         case "Intern":
@@ -83,15 +84,11 @@ async function init() {
           procType = intAnswers.empTypeInt;
           const intern = populateInt(intAnswers);
           employees.push(intern);
-          // console.log("returned interns role value: " + intern.getRole());
           break;
 
         case "Finished":
           console.log("Finish selected");
           procType = "Finished";
-
-          // kick of render here
-
           break;
 
         default:
@@ -100,6 +97,7 @@ async function init() {
     }
     const htmlString = render(employees);
     console.log(htmlString);
+    await writeFileAsync(outputPath, htmlString);
   } catch (err) {
     console.log(err);
   }
