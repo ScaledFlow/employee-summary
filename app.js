@@ -12,14 +12,16 @@ const fs = require("fs");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const render = require("./lib/htmlRenderer");
+const render = require("./lib/htmlRenderer.js");
+
+const test01 = "this is a test";
+// console.log(test02);
 
 let employees = [];
 
 // Write code to use inquirer to gather information about the development team members,
 
 function populateMgr(mgrAnswers) {
-  console.log(mgrAnswers.name);
   const e = new Manager(
     mgrAnswers.name,
     mgrAnswers.id,
@@ -30,28 +32,28 @@ function populateMgr(mgrAnswers) {
 }
 
 function populateEng(engAnswers) {
-  console.log(engAnswers.name);
   const e = new Engineer(
     engAnswers.name,
     engAnswers.id,
     engAnswers.email,
     engAnswers.github
   );
+  // console.log(e);
   return e;
 }
 
 function populateInt(intAnswers) {
-  console.log(intAnswers.name);
   const e = new Intern(
     intAnswers.name,
     intAnswers.id,
     intAnswers.email,
     intAnswers.school
   );
+  // console.log(e);
   return e;
 }
 
-// console.log(employees);
+console.log(employees);
 
 async function init() {
   try {
@@ -71,17 +73,17 @@ async function init() {
           procType = engAnswers.empTypeEng;
           const engineer = populateEng(engAnswers);
           employees.push(engineer);
-          console.log("returned engineer role value: " + engineer.getRole());
-          console.log("Eng selected, procType = " + procType);
+          // console.log("returned engineer role value: " + engineer.getRole());
+          // console.log("Eng selected, procType = " + procType);
           break;
 
         case "Intern":
-          console.log("Intern selected");
+          // console.log("Intern selected");
           let intAnswers = await promptInt();
           procType = intAnswers.empTypeInt;
           const intern = populateInt(intAnswers);
           employees.push(intern);
-          console.log("returned interns role value: " + intern.getRole());
+          // console.log("returned interns role value: " + intern.getRole());
           break;
 
         case "Finished":
@@ -96,6 +98,8 @@ async function init() {
           console.log(`Error: ${complete}.`);
       }
     }
+    const htmlString = render(employees);
+    console.log(htmlString);
   } catch (err) {
     console.log(err);
   }
