@@ -3,6 +3,8 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const promptMgr = require("./lib/promptMgr.js");
+const promptEng = require("./lib/promptEng.js");
+const promptInt = require("./lib/promptInt.js");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -14,21 +16,55 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 
-function populateMgr(answers) {
-  console.log(answers.name);
+function populateMgr(mgrAnswers) {
+  console.log(mgrAnswers.name);
   const e = new Manager(
-    answers.name,
-    answers.id,
-    answers.email,
-    answers.officeNumber
+    mgrAnswers.name,
+    mgrAnswers.id,
+    mgrAnswers.email,
+    mgrAnswers.officeNumber
   );
-  console.log("manager name is: " + e.getName());
+  console.log("manager name is: " + e.name);
 }
+
+function populateEng(engAnswers) {}
+
+function populateInt(intAnswers) {}
 
 async function init() {
   try {
-    const answers = await promptMgr();
-    await populateMgr(answers);
+    console.log("Please build your team");
+    const mgrAnswers = await promptMgr();
+    let complete = false;
+    //await populateMgr(mgrAnswers);
+    let procType = mgrAnswers.empTypeMng;
+    while (procType != "Finished") {
+      console.log("do something");
+      switch (procType) {
+        case "Engineer":
+          let engAnswers = await promptEng();
+          procType = engAnswers.empTypeEng;
+          console.log("Eng selected, procType = " + procType);
+          break;
+
+        case "Intern":
+          console.log("Intern selected");
+          let intAnswers = await promptInt();
+          procType = intAnswers.empTypeInt;
+          break;
+
+        case "Finished":
+          console.log("Finish selected");
+          procType = "Finished";
+
+          // kick of render here
+
+          break;
+
+        default:
+          console.log(`Error: ${complete}.`);
+      }
+    }
   } catch (err) {
     console.log(err);
   }
