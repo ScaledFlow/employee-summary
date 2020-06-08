@@ -14,6 +14,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+let employees = [];
+
 // Write code to use inquirer to gather information about the development team members,
 
 function populateMgr(mgrAnswers) {
@@ -24,22 +26,35 @@ function populateMgr(mgrAnswers) {
     mgrAnswers.email,
     mgrAnswers.officeNumber
   );
-  console.log("manager name is: " + e.name);
+
+  // employees.push(e);
+  // console.log("manager name is: " + e.name);
+  // console.log("get the role: " + e.getRole());
+  // console.log("Value of employees:" + Object.values(employees[0]));
+  // console.log("name of manager: " + employees.name);
+  return e;
 }
 
-function populateEng(engAnswers) {}
+function populateEng(engAnswers) {
+  console.log(engAnswers.name);
+}
 
 function populateInt(intAnswers) {}
+
+// console.log(employees);
 
 async function init() {
   try {
     console.log("Please build your team");
     const mgrAnswers = await promptMgr();
     let complete = false;
-    //await populateMgr(mgrAnswers);
+    const Managers = populateMgr(mgrAnswers);
+    employees.push(Managers);
+    console.log("value of employees: " + employees[0].name);
+    console.log("value of employees: " + employees[0].getRole());
+    console.log("returned e value: " + Managers.getRole());
     let procType = mgrAnswers.empTypeMng;
     while (procType != "Finished") {
-      console.log("do something");
       switch (procType) {
         case "Engineer":
           let engAnswers = await promptEng();
