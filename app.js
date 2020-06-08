@@ -26,20 +26,30 @@ function populateMgr(mgrAnswers) {
     mgrAnswers.email,
     mgrAnswers.officeNumber
   );
-
-  // employees.push(e);
-  // console.log("manager name is: " + e.name);
-  // console.log("get the role: " + e.getRole());
-  // console.log("Value of employees:" + Object.values(employees[0]));
-  // console.log("name of manager: " + employees.name);
   return e;
 }
 
 function populateEng(engAnswers) {
   console.log(engAnswers.name);
+  const e = new Engineer(
+    engAnswers.name,
+    engAnswers.id,
+    engAnswers.email,
+    engAnswers.github
+  );
+  return e;
 }
 
-function populateInt(intAnswers) {}
+function populateInt(intAnswers) {
+  console.log(intAnswers.name);
+  const e = new Intern(
+    intAnswers.name,
+    intAnswers.id,
+    intAnswers.email,
+    intAnswers.school
+  );
+  return e;
+}
 
 // console.log(employees);
 
@@ -48,17 +58,20 @@ async function init() {
     console.log("Please build your team");
     const mgrAnswers = await promptMgr();
     let complete = false;
-    const Managers = populateMgr(mgrAnswers);
-    employees.push(Managers);
-    console.log("value of employees: " + employees[0].name);
-    console.log("value of employees: " + employees[0].getRole());
-    console.log("returned e value: " + Managers.getRole());
+    const manager = populateMgr(mgrAnswers);
+    employees.push(manager);
+    // console.log("value of employees: " + employees[0].name);
+    // console.log("value of employees: " + employees[0].getRole());
+    // console.log("returned e value: " + Managers.getRole());
     let procType = mgrAnswers.empTypeMng;
     while (procType != "Finished") {
       switch (procType) {
         case "Engineer":
           let engAnswers = await promptEng();
           procType = engAnswers.empTypeEng;
+          const engineer = populateEng(engAnswers);
+          employees.push(engineer);
+          console.log("returned engineer role value: " + engineer.getRole());
           console.log("Eng selected, procType = " + procType);
           break;
 
@@ -66,6 +79,9 @@ async function init() {
           console.log("Intern selected");
           let intAnswers = await promptInt();
           procType = intAnswers.empTypeInt;
+          const intern = populateInt(intAnswers);
+          employees.push(intern);
+          console.log("returned interns role value: " + intern.getRole());
           break;
 
         case "Finished":
