@@ -1,3 +1,7 @@
+// app.js is launched from CLI - 'node app.js'
+// User is prompted to provide information for three types of team members
+// which includes a Manager and one or more Engineers or Interns
+
 const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
@@ -18,13 +22,9 @@ const render = require("./lib/htmlRenderer.js");
 // Setup up util.promisify
 const writeFileAsync = util.promisify(fs.writeFile);
 
-const test01 = "this is a test";
-// console.log(test02);
-
 let employees = [];
 
-// Write code to use inquirer to gather information about the development team members,
-
+// Inquirer used populateMgr to gather info from the CLI about the Manager.
 function populateMgr(mgrAnswers) {
   const e = new Manager(
     mgrAnswers.name,
@@ -35,6 +35,7 @@ function populateMgr(mgrAnswers) {
   return e;
 }
 
+// Inquirer used populateEng to gather info from the CLI about an Engineer.
 function populateEng(engAnswers) {
   const e = new Engineer(
     engAnswers.name,
@@ -42,10 +43,10 @@ function populateEng(engAnswers) {
     engAnswers.email,
     engAnswers.github
   );
-  // console.log(e);
   return e;
 }
 
+// Inquirer used populateEng to gather info from the CLI about an Intern.
 function populateInt(intAnswers) {
   const e = new Intern(
     intAnswers.name,
@@ -53,21 +54,17 @@ function populateInt(intAnswers) {
     intAnswers.email,
     intAnswers.school
   );
-  // console.log(e);
   return e;
 }
 
-console.log(employees);
-
+// Gather employee info through the CLI and call render to create a team.html page
 async function init() {
   try {
     console.log("Please build your team");
     const mgrAnswers = await promptMgr();
-    let complete = false;
+    let empErr = "Employee type not found";
     const manager = populateMgr(mgrAnswers);
     employees.push(manager);
-    // console.log("value of employees: " + employees[0].getRole());
-    // console.log("returned e value: " + Managers.getRole());
     let procType = mgrAnswers.empTypeMng;
     while (procType != "Finished") {
       switch (procType) {
@@ -79,7 +76,6 @@ async function init() {
           break;
 
         case "Intern":
-          // console.log("Intern selected");
           let intAnswers = await promptInt();
           procType = intAnswers.empTypeInt;
           const intern = populateInt(intAnswers);
@@ -92,37 +88,31 @@ async function init() {
           break;
 
         default:
-          console.log(`Error: ${complete}.`);
+          console.log(`Error: ${empErr}.`);
       }
     }
+
+    // Create output folder if it does not exist
+    if (fs.existsSync(OUTPUT_DIR)) {
+      console.log("");
+      console.log(
+        "The 'output' folder exists, the team.html file can be found there."
+      );
+    } else {
+      console.log("");
+      console.log(
+        "An 'output' folder has been created, the team.html file can be found there."
+      );
+      fs.mkdirSync(OUTPUT_DIR, 0744);
+    }
+
+    // Render the team.html page
     const htmlString = render(employees);
-    console.log(htmlString);
     await writeFileAsync(outputPath, htmlString);
   } catch (err) {
     console.log(err);
   }
 }
 
+// Launch program
 init();
-
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to Emp out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
