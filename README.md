@@ -1,6 +1,6 @@
 # Project Name
 
-> Weather Dashboard
+> Employee Summary
 
 ## Table of contents
 
